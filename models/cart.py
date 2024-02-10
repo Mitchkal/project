@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 module cart.py
 contains The cart model and methods
@@ -10,7 +11,7 @@ from datetime import datetime
 
 class CartItem(BaseModel):
     """
-    the cartitem model 
+    the cartitem model
     """
     product_id: str
     quantity: int
@@ -19,12 +20,11 @@ class CartItem(BaseModel):
 class Cart(BaseModel):
     """The cart model"""
     cart_id: str
-    user_id: str #obtained from firebase authentication
+    user_id: str  # obtained from firebase authentication
 
     products: List[CartItem] = []
     total_price: float = 0.0
     date_created: datetime = datetime.now()
-
 
     def display_cart_items(self):
         """displays the cart items"""
@@ -32,7 +32,7 @@ class Cart(BaseModel):
 
     def add_item_to_cart(self, product_is: str, quantity: int):
         """adds items to the cart"""
-        #check if item in cart
+        # check if item in cart
         for item in self.products:
             if item.product_id == product_id:
                 item.quanity += quantity
@@ -59,8 +59,10 @@ class Cart(BaseModel):
         self.total_price = sum(item.quantity * get_product_price(
                                item.product_id) for item in self.products)
 
+
 def get_product_price(product_id: str) -> float:
-        """logic to fetch product price
-        currently returnng static value
-        """
-        return 10.0
+    """
+    logic to fetch product price
+    currently returnng static value
+    """
+    return 10.0

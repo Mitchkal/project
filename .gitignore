@@ -1,0 +1,12 @@
+database.rules.json
+extensions
+firebase-debug.log
+firestore.indexes.json
+firestore.rules
+functions
+project
+public
+remoteconfig.template.json
+storage.rules
+theproducts.py
+key.json

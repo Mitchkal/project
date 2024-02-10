@@ -3,26 +3,25 @@ Module products.py
 contains functions to interact with firestore dtabase
 """
 from google.cloud import firestore
+from pydantic import BaseModel
 
-db = firestore.Client()
+# db = firestore.Client()
 
 
-class Product:
+class Product(BaseModel):
     """
     class for the product items
     """
-    def __init__(self, name, description, price,
-                 category, image_url, stock_quanity):
-        self.name = name
-        self.description = description
-        self.price = price
-        self.category = category
-        self.image_url = image_url
-        self.stock_quanity = stock_quantity
+    name = name
+    description = description
+    price = price
+    category = category
+    image_url = image_url
+    stock_quanity = stock_quantity
 
     def to_dict(self):
         """
-        converts object to dictionary for storage in firestore
+        converts model to dictionary for storage in firestore
         """
         return {
                 'name': self.name,

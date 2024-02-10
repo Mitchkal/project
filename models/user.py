@@ -1,10 +1,12 @@
+#!/usr/bin/python3
 """
-module user model 
+module user model
 uses pydantic for dtat validation and modelling
 """
 
 from pydantic import BaseModel
 from typing import Optional
+
 
 class User(BaseModel):
     """
@@ -15,4 +17,3 @@ class User(BaseModel):
     email: str
     full_name: Optional[str]
     profile_picture_url: Optional[str]
-
