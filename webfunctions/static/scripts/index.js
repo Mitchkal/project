@@ -27,12 +27,15 @@ $(document).ready(function () {
       let newProduct = document.createElement("div");
       newProduct.classList.add("item");
       newProduct.innerHTML = `
-        <img src="${product.image}"/>
-        <h2>${product.name}</h2>
-        <div class="price">$${product.price}</div>
-        <button class="addCart">
-            Add To Cart
-        </button>
+            <a href="../templates/details.html?id=${product.id}">
+                <img src="${product.image}"/>
+            </a>
+
+            <h2>${product.name}</h2>
+            <div class="price">$${product.price}</div>
+            <button class="addCart" data-id="${product.id}">
+                Add To Cart
+             </button>
         `;
       listProduct.appendChild(newProduct);
     });

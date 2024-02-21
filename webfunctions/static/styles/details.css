@@ -1,0 +1,60 @@
+/* item details*/
+.detail {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  text-align: left;
+}
+.detail .image img {
+  width: 100%;
+}
+.detail .image {
+  position: relative;
+}
+.detail .image::before {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  content: "";
+  background-color: #94817733;
+  z-index: -1;
+  border-radius: 180px 90px 120px 160px;
+  left: calc(50% - 150px);
+  top: 50px;
+}
+.detail .name {
+  font-size: xxx-large;
+  padding: 40px 0 0 0;
+  margin: 0 0 10px 0;
+}
+.detail .price {
+  font-weight: bold;
+  font-size: x-large;
+  letter-spacing: 7px;
+  margin-bottom: 20px;
+}
+
+.detail .buttons button {
+  background-color: #eee;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 20px;
+  font-family: Poppins;
+  font-size: large;
+}
+.detail svg {
+  width: 15px;
+}
+.detail .buttons button:nth-chils(2) {
+  background-color: #2f2f2f;
+  color: #eee;
+  display: inline-flex;
+  gap: 20px;
+  box-shadow: 0 10px 20px #2f2f2f77;
+}
+.detail .buttons svg {
+  transform: translateY(5px);
+}
+.detail .description {
+  font-weight: 300;
+}
