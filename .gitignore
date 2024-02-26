@@ -11,3 +11,5 @@ storage.rules
 theproducts.py
 key.json
 temporary
+config.py
+*.json

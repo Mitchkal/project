@@ -53,4 +53,4 @@ class StorageModel:
         if filters:
             for field, value in filters.items():
                 collection_ref = collection_ref.where(field, '==', value)
-        return [doc.to_dict() for doc in collection_ref.get()]
+        return [doc.to_dict() for doc in collection_ref.stream()]
