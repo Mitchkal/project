@@ -1,19 +1,17 @@
-import products from "./products.js";
+let products = [];
 const cart = () => {
   $(document).ready(function () {
     const iconCart = document.querySelector(".icon-cart");
     const closeBtn = document.querySelector(".cartTab .close");
     const body = document.querySelector("body");
-    // console.log(body);
+
     let cart = [];
 
     iconCart.addEventListener("click", () => {
       body.classList.toggle("activeTabCart");
-      // alert("Icon cart clicked");
     });
     closeBtn.addEventListener("click", () => {
       body.classList.toggle("activeTabCart");
-      // alert("close button clicked");
     });
     const setProductInCart = (idProduct, quantity, position) => {
       if (quantity > 0) {
@@ -22,10 +20,8 @@ const cart = () => {
             product_id: idProduct,
             quantity: quantity,
           });
-          console.log("idProduct", idProduct);
         } else {
           cart[position].quantity = quantity;
-          console.log("idproduct:", idProduct);
         }
       } else {
         cart.splice(position, 1);
@@ -39,21 +35,27 @@ const cart = () => {
       let totalHTML = document.querySelector(".icon-cart span");
 
       let totalQuantity = 0;
+      let cartTotal = 0;
       listHTML.innerHTML = "";
 
       cart.forEach((item) => {
-        console.log("item", item);
         totalQuantity = totalQuantity + item.quantity;
-        // console.log("product id is:", product_id);
+
         let position = products.findIndex(
           (value) => value.id == item.product_id
         );
-        // console.log("value.id", value.id);
-        console.log("item product_id:", item.product_id);
+        console.log("item:", item);
 
-        console.log("positionss is :", position);
         let info = products[position];
-        console.log("info: ", info);
+        console.log("info:", info);
+
+        console.log("cart info price: ", info.price);
+        let price = info.price;
+        console.log("the price: ", price);
+
+        let itemTotalPrice = price * item.quantity;
+        cartTotal += itemTotalPrice;
+
         let newITem = document.createElement("div");
         newITem.classList.add("item");
         newITem.innerHTML = `
@@ -61,7 +63,7 @@ const cart = () => {
             <img src="${info.image}" />
           </div>
           <div class="name">${info.name}</div>
-          <div class="totalPrice">$${info.price * item.quantity}</div>
+          <div class="totalPrice">$${itemTotalPrice}</div>
           <div class="quantity">
             <span class="minus" data-id="${info.id}">-</span>
             <span>${item.quantity}</span>
@@ -72,14 +74,16 @@ const cart = () => {
         listHTML.appendChild(newITem);
       });
       totalHTML.innerText = totalQuantity;
+      document.getElementById("cartTotal").innerText = cartTotal;
     };
 
     // listen for click events
     document.addEventListener("click", (event) => {
       let buttonClick = event.target;
-      console.log("idDDProduct:", buttonClick.dataset.id);
+
       let idProduct = buttonClick.dataset.id;
       let position = cart.findIndex((value) => value.product_id == idProduct);
+      console.log("The cart position is: ", position);
 
       let quantity = position < 0 ? 0 : cart[position].quantity;
       if (buttonClick.classList.contains("addCart")) {
@@ -92,8 +96,27 @@ const cart = () => {
         quantity--;
         setProductInCart(idProduct, quantity, position);
       }
+      // else if (buttonClick.classList.contains("checkOut")){
+      //   checkout(totalPrice);
+      // }
     });
-    const initApp = () => {
+
+    const fetchProducts = () => {
+      return $.ajax({
+        url: "http://localhost:5000/products",
+        method: "GET",
+        dataType: "json",
+      })
+        .then((data) => {
+          return data;
+        })
+        .fail((error) => {
+          console.error("Error fetching products:", error);
+          throw error;
+        });
+    };
+    const initApp = async () => {
+      products = await fetchProducts();
       if (localStorage.getItem("cart")) {
         cart = JSON.parse(localStorage.getItem("cart"));
       }

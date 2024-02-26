@@ -1,17 +1,18 @@
-import cart from "./carts.js";
-import products from "./products.js";
+import cart from "./cart.js";
+// import products from "./products.js";
 $(document).ready(function () {
   const app = document.getElementById("app");
   const temporaryContent = document.getElementById("temporaryContent");
 
+  const fileURL = "http://localhost:5000/template";
   const loadTemplate = () => {
-    fetch("../templates/template.html")
+    fetch(`${fileURL}`)
       .then((response) => response.text())
       .then((html) => {
         app.innerHTML = html;
         const contentTab = document.getElementById("contentTab");
         contentTab.innerHTML = temporaryContent.innerHTML;
-        temporaryContent.innerHTML = null;
+        temporaryContent.innerHTML = "";
 
         cart();
         initApp();
@@ -20,14 +21,19 @@ $(document).ready(function () {
   loadTemplate();
   const initApp = () => {
     //loads the product list
-    console.log(products);
-    const listProduct = document.querySelector(".listProduct");
-    listProduct.innerhtml = null;
-    products.forEach((product) => {
-      let newProduct = document.createElement("div");
-      newProduct.classList.add("item");
-      newProduct.innerHTML = `
-            <a href="../templates/details.html?id=${product.id}">
+    $.ajax({
+      url: "http://localhost:5000/products",
+      method: "GET",
+      dataType: "json",
+      success: function (products) {
+        const listProduct = document.querySelector(".listProduct");
+        listProduct.innerHTML = "";
+        $.each(products, function (_, product) {
+          let newProduct = document.createElement("div");
+          newProduct.classList.add("item");
+          // <a href="../templates/detail.html?id=${product.id}">
+          newProduct.innerHTML = `
+            <a href="http://localhost:5000/detail?id=${product.id}">
                 <img src="${product.image}"/>
             </a>
 
@@ -37,7 +43,12 @@ $(document).ready(function () {
                 Add To Cart
              </button>
         `;
-      listProduct.appendChild(newProduct);
+          listProduct.appendChild(newProduct);
+        });
+      },
+      error: function (error) {
+        console.error("Error fetching products:", error);
+      },
     });
   };
 });
