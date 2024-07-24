@@ -2,23 +2,23 @@
 
 ---
 
-## Installation instuctions
-
 ---
+
+## Installation instuctions
 
 ---
 
 ### clone the repository from https://github.com/Mitchkal/project.git
 
-### cd into the cloned repository > with git checkout development
+### cd into the cloned repository
 
-### change into the developemnt banch with git checkout
+### change into the developemnt banch with `git checkout development`
 
-### create a virtual environment with > python3 -m venv <virtual-environment-name>
+### create a virtual environment with > `python3 -m venv <virtual-environment-name>`
 
-### Activate the virtual environment with > source <virtal-environment-name>/bin/activate
+### Activate the virtual environment with > `source <virtal-environment-name>/bin/activate`
 
-### Install dependency requirements with > pip install -r requirements.txt
+### Install dependency requirements with > `pip install -r requirements.txt`
 
 ## Starting
 
@@ -28,7 +28,7 @@
 
 ### Ensure you copy the firebase key.json file into the webfunctions directory; key.json will contain the firebase authentication keys.
 
-### Start the Flask application with > flask --app app run
+### Start the Flask application with > `flask --app app run`
 
 ### Access the web application at > http://localhost:5000/
 
