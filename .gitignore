@@ -13,3 +13,6 @@ key.json
 temporary
 config.py
 *.json
+temp
+webfunctions/key.json
+venv

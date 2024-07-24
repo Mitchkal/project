@@ -28,8 +28,10 @@ const cart = () => {
         }
       } else {
         cart.splice(position, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        refreshCartHTML();
       }
-      console.log("cart contents:", cart);
+      // console.log("cart contents:", cart);
       localStorage.setItem("cart", JSON.stringify(cart));
       refreshCartHTML();
     };
@@ -38,63 +40,74 @@ const cart = () => {
     const refreshCartHTML = () => {
       let listHTML = document.querySelector(".listCart");
       if (listHTML !== null) {
-        console.log("listHTML:", listHTML);
+        // console.log("listHTML:", listHTML);
         //   let totalHTML = $(".icon-cart span");
         let totalHTML = document.querySelector(".icon-cart span");
 
         let totalQuantity = 0;
         let cartTotal = 0;
         listHTML.innerHTML = "";
+        if (cart != null) {
+          // console.log("the cart contents is: ", cart);
+          cart.forEach((item) => {
+            totalQuantity += item.quantity;
+            // console.log("since products is: ", products);
+            // console.log("The products before finding index:", products);
 
-        cart.forEach((item) => {
-          totalQuantity += item.quantity;
+            let position = products.findIndex(
+              (value) => value.id == item.product_id
+            );
+            // console.log(
+            //   "Now the position of each product in the cart is: ",
+            //   position
+            // );
 
-          let position = products.findIndex(
-            (value) => value.id == item.product_id
-          );
-          console.log("The products:", products);
-          console.log("The following cart items: ", item);
-          console.log("item quanity:", item.quantity);
-          console.log("item id:", item.product_id);
-          console.log("The position:", position);
-          console.log("productsion:", products);
-          let info = products[position];
-          console.log("This is the info: ", info);
-          console.log("info.price", info.price);
-          let price = info.price;
-          let itemTotalPrice = price * item.quantity;
-          cartTotal += itemTotalPrice;
-          let newItem = document.createElement("div");
-          newItem.classList.add("item");
+            // console.log("The following cart items: ", item);
+            // console.log("item quanity:", item.quantity);
+            // console.log("item id:", item.product_id);
+            // console.log("The position:", position);
+            // console.log("productsion:", products);
+            let info = products[position];
+            // console.log("This is the info: ", info);
+            // console.log("info.price", info.price);
+            let price = info.price;
+            let itemTotalPrice = price * item.quantity;
+            cartTotal += itemTotalPrice;
+            let newItem = document.createElement("div");
+            newItem.classList.add("item");
 
-          newItem.innerHTML = `
-                <div class="image">
-                  <img src="${info.image}" />
-                </div>
-                <div class="name">${info.name}</div>
-                <div class="totalPrice">$${itemTotalPrice}</div>
-                <div class="quantity">
-                  <span class="minus" data-id="${info.id}">-</span>
-                  <span>${item.quantity}</span>
-                  <span class="plus" data-id="${info.id}">+</span>
-                </div>
-            `;
-          listHTML.appendChild(newItem);
-        });
+            newItem.innerHTML = `
+                  <div class="image">
+                    <img src="${info.image}" />
+                  </div>
+                  <div class="name">${info.name}</div>
+                  <div class="totalPrice">$${itemTotalPrice}</div>
+                  <div class="quantity">
+                    <span class="minus" data-id="${info.id}">-</span>
+                    <span>${item.quantity}</span>
+                    <span class="plus" data-id="${info.id}">+</span>
+                  </div>
+              `;
+            listHTML.appendChild(newItem);
+          });
+        } else {
+          console.log("cart is null");
+        }
+
         totalHTML.innerText = totalQuantity;
         //   $totalHTML.text(totalQuantity);
         $("#cartTotal").text(cartTotal);
       } else {
-        console.log("listHTML is null. Cnnot refresh cart");
+        console.log("listHTML is null. Cannot refresh cart");
       }
     };
 
     // Event delegation for click events
     $(document).on("click", ".addCart, .plus, .minus", function () {
       let idProduct = $(this).data("id");
-      console.log("idProduct", idProduct);
+      // console.log("idProduct", idProduct);
       let position = cart.findIndex((value) => value.product_id == idProduct);
-      console.log("click position:", position);
+      // console.log("click position:", position);
       let quantity = position < 0 ? 0 : cart[position].quantity;
 
       if ($(this).hasClass("addCart") || $(this).hasClass("plus")) {
@@ -106,7 +119,7 @@ const cart = () => {
     });
     const fetchProducts = () => {
       return $.ajax({
-        url: "http://localhost:5000/products",
+        url: "http://localhost:5000/api/v1/products",
         method: "GET",
         dataType: "json",
         success: function (data) {
@@ -124,7 +137,7 @@ const cart = () => {
         products = await fetchProducts();
         if (localStorage.getItem("cart")) {
           cart = JSON.parse(localStorage.getItem("cart"));
-          console.log("new cart contents", cart);
+          // console.log("new cart contents", cart);
         }
         refreshCartHTML();
       } catch (error) {

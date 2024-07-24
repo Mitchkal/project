@@ -73,15 +73,9 @@ $(document).ready(function () {
 
   const fetchProducts = () => {
     return $.ajax({
-      url: "http://localhost:5000/products",
+      url: "http://localhost:5000/api/v1/products",
       method: "GET",
       dataType: "json",
     });
   };
-  //   const addToCart = (event) => {
-  //     const productId = $(event.target).data("id");
-
-  //     //logic
-  //     console.log("Adding product with ID", productId, "to cart");
-  //   };
 });

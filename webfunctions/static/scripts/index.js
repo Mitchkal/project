@@ -22,7 +22,7 @@ $(document).ready(function () {
   const initApp = () => {
     //loads the product list
     $.ajax({
-      url: "http://localhost:5000/products",
+      url: "http://localhost:5000/api/v1/products",
       method: "GET",
       dataType: "json",
       success: function (products) {

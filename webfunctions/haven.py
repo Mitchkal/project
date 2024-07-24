@@ -31,9 +31,6 @@ def thankyou():
     """returns the payment thankyou"""
     return render_template('thankyou.html')
 
-
-
-
 @app.errorhandler(404)
 def not_found(error):
     """
@@ -46,14 +43,14 @@ def create_checkout_session():
     """stripe checkout"""
     # customer information
 
-    customer  = stripe.Customer.create(email=request.form('stripeEmail']),
-                                        source=request.form('stripeToken']))
+    customer  = stripe.Customer.create(email=request.form('stripeEmail'),
+                                        source=request.form('stripeToken'))
     # payment information
 
     charge = stripe.Charge.create(
-            customer=customer.id
-            amount=1999
-            currency='usd'
+            customer=customer.id,
+            amount=1999,
+            currency='usd',
             description='Payment'
         )
     return redirect(url_for('thankyou'))
@@ -67,7 +64,6 @@ def create_checkout_session():
             cancel_url='',
     )"""
     # return jsonify({'id': session.id})
-
 
 
 app.config['SWAGGER'] = {

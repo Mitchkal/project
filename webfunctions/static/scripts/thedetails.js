@@ -2,36 +2,34 @@ import cart from "./cart.js";
 
 $(document).ready(function () {
   let products = [];
-  let app = $("#app");
 
-  const temporaryContent = $("#temporaryContent");
+  const app = document.getElementById("app");
+  const temporaryContent = document.getElementById("temporaryContent");
+  console.log("hello");
 
   const loadTemplate = () => {
     fetch("http://localhost:5000/template")
       .then((response) => response.text())
-      .then((html) => {
-        app.innerhtml = html;
-        // let contentTab = document.getElementById("contentTab");
-        // contentTab.innerHTML = temporaryContent.innerHTML;
-        // temporaryContent.innerHTML = "";
-        $("#contentTab").html(temporaryContent.html());
-        // temporaryContent.html("");
-
-        // = document.getElementById("contentTab");
-        // console.log("contentTab", contentTab);
-
-        // contentTab.innerHTML = temporaryContent.innerHTML;
-
-        // temporaryContent.innerHTML = "";
+      .then((htmlContent) => {
+        app.innerHTML = htmlContent;
+        const contentTab = document.getElementById("contentTab");
+        contentTab.innerHTML = temporaryContent.innerHTML;
+        temporaryContent.innerHTML = "";
 
         cart();
         initApp();
+      })
+      .catch((error) => {
+        console.error("Error fetching template: ", error);
       });
   };
+
   loadTemplate();
 
   const initApp = async () => {
     products = await fetchProducts();
+
+    console.log("These are the products: ", products);
     let idProduct = new URLSearchParams(window.location.search).get("id");
     console.log("idProduct", idProduct);
     let info = products.find((value) => value.id == idProduct);
@@ -69,12 +67,9 @@ $(document).ready(function () {
 
   const fetchProducts = () => {
     return $.ajax({
-      url: "http://localhost:5000/products",
+      url: "http://localhost:5000/api/v1/products",
       method: "GET",
       dataType: "json",
     });
   };
-
-  //   console.log("the contentTab is:", contentTab);
-  //   console.log("now app is:", app);
 });
